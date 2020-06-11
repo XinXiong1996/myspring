@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="cn.xx"/>
+    <!--配置代理的service对象-->
+    <bean id="proxyaccoutService" factory-bean="beanfactory" factory-method="getAccountService"></bean>
+
+    <!--配置beanfactory-->
+    <bean id="beanfactory" class="cn.xx.factory.BeanFactory">
+        <property name="accountService" ref="accoutService"></property>
+        <property name="txManager" ref="transactionManager"></property>
+    </bean>
+
+    <bean id="transactionManager" class="cn.xx.utils.TransactionManager"></bean>
+
+    <bean id="accoutService" class="cn.xx.service.AccountServiceImpl"></bean>
+
+    <bean id="accountDao" class="cn.xx.dao.AccountDaoImpl"></bean>
+
+
+    <bean id="runner" class="org.apache.commons.dbutils.QueryRunner" scope="prototype"></bean>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mybatis"></property>
+        <property name="user" value="root"></property>
+        <property name="password" value="root"></property>
+    </bean>
+
+</beans>
